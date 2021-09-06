@@ -15,13 +15,13 @@ interface MVPPresenter<in V : MVPView> {
      * Resumes the presentation. This should be called in the view's (Activity or Fragment)
      * onResume() method.
      */
-    fun onResume()
+    fun onResume() { /*no op*/ }
 
     /**
      * Pauses the presentation. This should be called in the view's Activity or Fragment)
      * onPause() method.
      */
-    fun onPause()
+    fun onPause() { /*no op*/ }
 
 
     /**
