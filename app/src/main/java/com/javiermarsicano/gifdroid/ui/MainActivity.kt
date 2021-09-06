@@ -1,11 +1,10 @@
-package com.javiermarsicano.gifdroid
+package com.javiermarsicano.gifdroid.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import com.javiermarsicano.gifdroid.base.BaseActivity
 import com.javiermarsicano.gifdroid.databinding.ActivityMainBinding
-import com.javiermarsicano.gifdroid.ui.SectionsPagerAdapter
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
