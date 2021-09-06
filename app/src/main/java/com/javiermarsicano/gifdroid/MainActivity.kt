@@ -2,8 +2,8 @@ package com.javiermarsicano.gifdroid
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.javiermarsicano.gifdroid.ui.main.SectionsPagerAdapter
 import com.javiermarsicano.gifdroid.databinding.ActivityMainBinding
+import com.javiermarsicano.gifdroid.ui.SectionsPagerAdapter
 
 class MainActivity : AppCompatActivity() {
 

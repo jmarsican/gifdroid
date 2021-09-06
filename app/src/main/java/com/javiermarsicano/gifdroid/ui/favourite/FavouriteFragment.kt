@@ -1,15 +1,15 @@
-package com.javiermarsicano.gifdroid.ui.main
+package com.javiermarsicano.gifdroid.ui.favourite
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.javiermarsicano.gifdroid.databinding.FragmentMainBinding
+import com.javiermarsicano.gifdroid.databinding.FragmentFavouriteBinding
 
-class MainFragment : Fragment() {
+class FavouriteFragment : Fragment() {
 
-    private var _binding: FragmentMainBinding? = null
+    private var _binding: FragmentFavouriteBinding? = null
 
     private val binding get() = _binding!!
 
@@ -23,7 +23,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        _binding = FragmentFavouriteBinding.inflate(inflater, container, false)
         val root = binding.root
 
 
@@ -32,7 +32,7 @@ class MainFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = MainFragment()
+        fun newInstance() = FavouriteFragment()
     }
 
     override fun onDestroyView() {
