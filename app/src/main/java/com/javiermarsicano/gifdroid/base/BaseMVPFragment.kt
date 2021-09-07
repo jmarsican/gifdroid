@@ -7,40 +7,49 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import com.javiermarsicano.gifdroid.base.mvp.MVPPresenter
 import com.javiermarsicano.gifdroid.base.mvp.MVPView
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
 
-abstract class BaseMVPFragment<in V : MVPView, P : MVPPresenter<V>> : Fragment(), MVPView {
+abstract class BaseMVPFragment<VB : ViewBinding, in V : MVPView, P : MVPPresenter<V>> : Fragment(), MVPView {
 
     private var mActivity: BaseActivity? = null
 
     protected abstract fun getPresenter(): P
 
+    private var _viewBinding: VB? = null
+    protected val viewBinding: VB
+        get() = _viewBinding!!
+
+
     private var fragmentResultSubscription: Disposable? = null
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    @LayoutRes
-    abstract fun layoutId(): Int
+    /**
+     * @return view binding for the screen
+     */
+    abstract fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(layoutId(), container, false)
+    ): View {
+        _viewBinding = createViewBinding(inflater, container)
         setHasOptionsMenu(true)
         view?.isClickable = true
-        return view
+        return viewBinding.root
     }
+
+    protected open fun bindViews() = Unit
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        bindViews()
         getPresenter().onBindView(this as V)
     }
 
@@ -55,6 +64,7 @@ abstract class BaseMVPFragment<in V : MVPView, P : MVPPresenter<V>> : Fragment()
         removeFragmentResultSubscription()
 
         getPresenter().onDestroy()
+        _viewBinding = null
         super.onDestroy()
     }
 
