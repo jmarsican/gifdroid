@@ -4,10 +4,12 @@ import com.javiermarsicano.gifdroid.data.model.Content
 import com.javiermarsicano.gifdroid.data.model.ImageSpecs
 import com.javiermarsicano.gifdroid.data.model.Images
 import com.javiermarsicano.gifdroid.data.repository.TrendingRepository
+import com.javiermarsicano.gifdroid.rules.RxSchedulersOverrideRule
 import com.javiermarsicano.gifdroid.ui.main.MainScreenContract
 import com.javiermarsicano.gifdroid.ui.main.MainScreenPresenter
 import io.reactivex.Single
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -18,6 +20,9 @@ import org.mockito.Mockito.`when` as whenever
 
 @RunWith(MockitoJUnitRunner::class)
 class MainScreenPresenterTests {
+
+    @get:Rule
+    val rxSchedulersRule = RxSchedulersOverrideRule()
 
     private lateinit var presenter: MainScreenPresenter
 
@@ -31,7 +36,8 @@ class MainScreenPresenterTests {
 
     @Before
     fun setup() {
-        presenter = MainScreenPresenter()
+        presenter = MainScreenPresenter(repository)
+        presenter.onBindView(view)
     }
 
     @Test
@@ -43,6 +49,7 @@ class MainScreenPresenterTests {
 
         presenter.getTrendingImages()
 
+        verify(view).clearResults()
         verify(view).addTrendingResults(imagesList)
     }
 }
