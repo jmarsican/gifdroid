@@ -35,6 +35,10 @@ class FavouriteFragment :
 
         }
         viewBinding.favouritesList.adapter = favouritesAdapter
+    }
+
+    override fun onResume() {
+        super.onResume()
         getPresenter().getFavourites()
     }
 

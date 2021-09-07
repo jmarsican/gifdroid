@@ -1,13 +1,17 @@
 package com.javiermarsicano.gifdroid
 
 import com.javiermarsicano.gifdroid.data.model.Content
+import com.javiermarsicano.gifdroid.data.model.Favourite
 import com.javiermarsicano.gifdroid.data.model.ImageSpecs
 import com.javiermarsicano.gifdroid.data.model.Images
+import com.javiermarsicano.gifdroid.data.repository.FavouritesRepository
 import com.javiermarsicano.gifdroid.data.repository.TrendingRepository
 import com.javiermarsicano.gifdroid.rules.RxSchedulersOverrideRule
 import com.javiermarsicano.gifdroid.ui.main.MainScreenContract
 import com.javiermarsicano.gifdroid.ui.main.MainScreenPresenter
+import com.nhaarman.mockitokotlin2.argumentCaptor
 import io.reactivex.Single
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -30,13 +34,15 @@ class MainScreenPresenterTests {
     private lateinit var view: MainScreenContract.View
     @Mock
     private lateinit var repository: TrendingRepository
+    @Mock
+    private lateinit var favouritesRepository: FavouritesRepository
 
     private val images = Images(ImageSpecs("https://giphy.com/gifs/MickeyMouse-VkUdMsK42kNgrPWuHd", 1024))
     private val content = Content("VkUdMsK42kNgrPWuHd", images, "Dancing dogs", "MickeyMouse-VkUdMsK42kNgrPWuHd")
 
     @Before
     fun setup() {
-        presenter = MainScreenPresenter(repository)
+        presenter = MainScreenPresenter(repository, favouritesRepository)
         presenter.onBindView(view)
     }
 
@@ -52,4 +58,14 @@ class MainScreenPresenterTests {
         verify(view).clearResults()
         verify(view).addTrendingResults(imagesList)
     }
+
+    @Test
+    fun `set image as favourite`() {
+        presenter.setImageFavourite(content)
+
+        val captor = argumentCaptor<Favourite>()
+        verify(favouritesRepository).saveFavourite(captor.capture())
+        assertEquals(captor.firstValue.id, content.id)
+    }
+
 }

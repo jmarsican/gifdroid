@@ -22,7 +22,7 @@ class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.Vie
 
     override fun bindViews() {
         resultsAdapter = ResultsAdapter {
-            Timber.d("CLICK!!")
+            getPresenter().setImageFavourite(it)
         }
         viewBinding.resultsList.adapter = resultsAdapter
         getPresenter().getTrendingImages()

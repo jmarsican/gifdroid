@@ -34,6 +34,10 @@ class ResultsAdapter(val onItemClickListener: (Content) -> Unit) :
             )
             val isFavourite = favoriteIds.contains(item.id)
             entryGoBtn.visibility  = if (isFavourite) View.VISIBLE else View.INVISIBLE
+            root.setOnLongClickListener {
+                onItemClickListener(item)
+                true
+            }
         }
     }
 

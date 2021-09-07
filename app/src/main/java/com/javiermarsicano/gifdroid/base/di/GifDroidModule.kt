@@ -2,7 +2,9 @@ package com.javiermarsicano.gifdroid.base.di
 
 import android.app.Application
 import android.net.Uri
+import androidx.room.Room
 import com.javiermarsicano.gifdroid.BuildConfig.BASE_URL
+import com.javiermarsicano.gifdroid.data.persistence.db.LocalStorageDatabase
 import com.javiermarsicano.gifdroid.data.repository.FavouritesLocalDBRepository
 import com.javiermarsicano.gifdroid.data.repository.FavouritesRepository
 import com.javiermarsicano.gifdroid.data.repository.TrendingRemoteRepository
@@ -23,7 +25,15 @@ class GifDroidModule(private val application: Application) {
 
     @Singleton
     @Provides
-    fun provideFavouritesRepository(): FavouritesRepository = FavouritesLocalDBRepository(application)
+    fun provideFavouritesRepository(database: LocalStorageDatabase): FavouritesRepository =
+        FavouritesLocalDBRepository(database)
+
+    @Singleton
+    @Provides
+    fun provideDatabase(): LocalStorageDatabase =
+        Room.databaseBuilder(application, LocalStorageDatabase::class.java, "gifsdroid.db")
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Provides
     fun provideMainPresenter(presenter: MainScreenPresenter):

@@ -12,5 +12,6 @@ interface MainScreenContract {
 
     interface Presenter: MVPPresenter<View> {
         fun getTrendingImages()
+        fun setImageFavourite(content: Content)
     }
 }
