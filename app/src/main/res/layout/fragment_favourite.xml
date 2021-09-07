@@ -8,10 +8,14 @@
     tools:context=".ui.main.MainFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favourites_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        tools:listitem="@layout/favourite_item"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:spanCount="3"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

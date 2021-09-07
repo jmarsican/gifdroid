@@ -5,29 +5,49 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.javiermarsicano.gifdroid.GifDroidApplication
+import com.javiermarsicano.gifdroid.base.BaseMVPFragment
+import com.javiermarsicano.gifdroid.data.model.Favourite
 import com.javiermarsicano.gifdroid.databinding.FragmentFavouriteBinding
+import javax.inject.Inject
 
-class FavouriteFragment : Fragment() {
+class FavouriteFragment :
+    BaseMVPFragment<FragmentFavouriteBinding, FavouriteScreenContract.View, FavouriteScreenContract.Presenter>(),
+        FavouriteScreenContract.View {
 
-    private var _binding: FragmentFavouriteBinding? = null
+    @Inject
+    lateinit var mPresenter: FavouriteScreenContract.Presenter
+    override fun getPresenter(): FavouriteScreenContract.Presenter = mPresenter
 
-    private val binding get() = _binding!!
+    private lateinit var favouritesAdapter: FavouritesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        (activity?.application as GifDroidApplication).component.inject(this)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentFavouriteBinding {
+        return FragmentFavouriteBinding.inflate(inflater, container, false)
+    }
 
-        _binding = FragmentFavouriteBinding.inflate(inflater, container, false)
-        val root = binding.root
+    override fun bindViews() {
+        favouritesAdapter = FavouritesAdapter {
 
+        }
+        viewBinding.favouritesList.adapter = favouritesAdapter
+        getPresenter().getFavourites()
+    }
 
-        return root
+    override fun showFavourites(favourites: List<Favourite>) {
+        favouritesAdapter.addItems(favourites)
+    }
+
+    override fun showLoading() {
+        //TODO
+    }
+
+    override fun hideLoading() {
+        //TODO
     }
 
     companion object {
@@ -35,8 +55,4 @@ class FavouriteFragment : Fragment() {
         fun newInstance() = FavouriteFragment()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

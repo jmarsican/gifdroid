@@ -3,8 +3,12 @@ package com.javiermarsicano.gifdroid.base.di
 import android.app.Application
 import android.net.Uri
 import com.javiermarsicano.gifdroid.BuildConfig.BASE_URL
+import com.javiermarsicano.gifdroid.data.repository.FavouritesLocalDBRepository
+import com.javiermarsicano.gifdroid.data.repository.FavouritesRepository
 import com.javiermarsicano.gifdroid.data.repository.TrendingRemoteRepository
 import com.javiermarsicano.gifdroid.data.repository.TrendingRepository
+import com.javiermarsicano.gifdroid.ui.favourite.FavouriteScreenContract
+import com.javiermarsicano.gifdroid.ui.favourite.FavouriteScreenPresenter
 import com.javiermarsicano.gifdroid.ui.main.MainScreenContract
 import com.javiermarsicano.gifdroid.ui.main.MainScreenPresenter
 import dagger.Module
@@ -17,7 +21,15 @@ class GifDroidModule(private val application: Application) {
     @Provides
     fun provideTrendingRepository(): TrendingRepository = TrendingRemoteRepository(application, Uri.parse(BASE_URL))
 
+    @Singleton
     @Provides
-    fun provideEventsPresenter(presenter: MainScreenPresenter):
+    fun provideFavouritesRepository(): FavouritesRepository = FavouritesLocalDBRepository(application)
+
+    @Provides
+    fun provideMainPresenter(presenter: MainScreenPresenter):
             MainScreenContract.Presenter = presenter
+
+    @Provides
+    fun provideFavouritePresenter(presenter: FavouriteScreenPresenter):
+            FavouriteScreenContract.Presenter = presenter
 }
