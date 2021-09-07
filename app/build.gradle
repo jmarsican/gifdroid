@@ -23,9 +23,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "GIFS_SERVICES_API_KEY", '"TW4H4h8hua6KEAbNETwkAz83YDjEERNC"')
+            buildConfigField("String", "BASE_URL", '"https://api.giphy.com"')
         }
         debug {
             buildConfigField("String", "GIFS_SERVICES_API_KEY", '"TW4H4h8hua6KEAbNETwkAz83YDjEERNC"')
+            buildConfigField("String", "BASE_URL", '"https://api.giphy.com"')
         }
     }
     compileOptions {

@@ -64,10 +64,9 @@ open class BaseRemoteRepository(val context: Context, private val baseUrl: Uri) 
             this.slug
         )
 
+    private fun ImagesDto.toModel() = Images(this.original.toModel())
 
-    fun ImagesDto.toModel() = Images(this.original.toModel())
-
-    fun ImageSpecsDto.toModel() =
+    private fun ImageSpecsDto.toModel() =
         ImageSpecs(
             this.url,
             this.size

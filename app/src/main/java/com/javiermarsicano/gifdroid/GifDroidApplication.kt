@@ -13,7 +13,7 @@ class GifDroidApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-        this.component = DaggerGifDroidComponent.builder().gifDroidModule(GifDroidModule()).build()
+        this.component = DaggerGifDroidComponent.builder().gifDroidModule(GifDroidModule(this)).build()
 
     }
 }
