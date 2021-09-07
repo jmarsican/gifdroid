@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.javiermarsicano.gifdroid.GifDroidApplication
 import com.javiermarsicano.gifdroid.base.BaseMVPFragment
 import com.javiermarsicano.gifdroid.data.model.Content
 import com.javiermarsicano.gifdroid.databinding.FragmentMainBinding
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.View, MainScreenContract.Presenter>(), MainScreenContract.View {
@@ -16,8 +18,21 @@ class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.Vie
 
     override fun getPresenter(): MainScreenContract.Presenter = mPresenter
 
+    private lateinit var resultsAdapter: ResultsAdapter
+
     override fun bindViews() {
         super.bindViews()
+        resultsAdapter = ResultsAdapter {
+            Timber.d("CLICK!!")
+        }
+        viewBinding.resultsList.adapter = resultsAdapter
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity?.application as GifDroidApplication).component.inject(this)
+        getPresenter().getTrendingImages()
+
     }
 
     override fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentMainBinding {
@@ -25,13 +40,12 @@ class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.Vie
     }
 
     override fun clearResults() {
-        TODO("Not yet implemented")
+
     }
 
     override fun addTrendingResults(results: List<Content>) {
-        TODO("Not yet implemented")
+        resultsAdapter.addItems(results)
     }
-
 
     companion object {
         @JvmStatic
