@@ -22,6 +22,7 @@ class ResultsAdapter(val onItemClickListener: (Content) -> Unit) :
         val item = items[position]
         holder.binding.apply {
             entryTitle.text = item.title
+            entryId.text = item.id
             entryImage.setImageUrl(
                 item.images.original.url,
                 crossFade = true,
