@@ -6,6 +6,8 @@ import com.javiermarsicano.gifdroid.data.model.Content
 
 interface MainScreenContract {
     interface View: MVPView {
+        fun clearResults()
+        fun addTrendingResults(results: List<Content>)
     }
 
     interface Presenter: MVPPresenter<View> {
