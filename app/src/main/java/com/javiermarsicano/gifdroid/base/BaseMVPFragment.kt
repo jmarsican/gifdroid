@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.javiermarsicano.gifdroid.R
 import com.javiermarsicano.gifdroid.base.mvp.MVPPresenter
 import com.javiermarsicano.gifdroid.base.mvp.MVPView
 import io.reactivex.disposables.CompositeDisposable
@@ -49,8 +51,8 @@ abstract class BaseMVPFragment<VB : ViewBinding, in V : MVPView, P : MVPPresente
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindViews()
         getPresenter().onBindView(this as V)
+        bindViews()
     }
 
     override fun onAttach(context: Context) {
@@ -74,17 +76,12 @@ abstract class BaseMVPFragment<VB : ViewBinding, in V : MVPView, P : MVPPresente
         }
     }
 
-    override fun showLoading() {
-    }
-
-    override fun hideLoading() {
-    }
-
     override fun onError(resId: Int) {
     }
 
     override fun onError(message: String?) {
         Timber.e("An error occurred: $message")
+        Toast.makeText(context, context?.getString(R.string.generic_error, message), Toast.LENGTH_SHORT).show()
     }
 
     override fun hideKeyboard() {

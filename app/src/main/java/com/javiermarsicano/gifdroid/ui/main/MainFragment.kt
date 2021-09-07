@@ -21,18 +21,16 @@ class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.Vie
     private lateinit var resultsAdapter: ResultsAdapter
 
     override fun bindViews() {
-        super.bindViews()
         resultsAdapter = ResultsAdapter {
             Timber.d("CLICK!!")
         }
         viewBinding.resultsList.adapter = resultsAdapter
+        getPresenter().getTrendingImages()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.application as GifDroidApplication).component.inject(this)
-        getPresenter().getTrendingImages()
-
     }
 
     override fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentMainBinding {
@@ -40,11 +38,24 @@ class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.Vie
     }
 
     override fun clearResults() {
+        resultsAdapter.clear()
+    }
 
+    fun setFavourites(favourites: List<String>) {
+        resultsAdapter.favoriteIds.clear()
+        resultsAdapter.favoriteIds.addAll(favourites)
     }
 
     override fun addTrendingResults(results: List<Content>) {
         resultsAdapter.addItems(results)
+    }
+
+    override fun showLoading() {
+        viewBinding.loadingStatus.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        viewBinding.loadingStatus.visibility = View.GONE
     }
 
     companion object {

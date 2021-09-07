@@ -10,16 +10,18 @@ class MainScreenPresenter @Inject constructor(
      private val repository: TrendingRepository
 ): BaseMVPPresenter<MainScreenContract.View>(), MainScreenContract.Presenter {
     override fun getTrendingImages() {
+        viewReference.get()?.showLoading()
         repository.getTrendingContent()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doFinally { viewReference.get()?.hideLoading() }
             .subscribe(
                 {
                     val view = viewReference.get()
                     view?.clearResults()
                     view?.addTrendingResults(it)
                 },
-                { /* TODO show error msg */ }
+                { viewReference.get()?.onError(it.message) }
             ).bindToLifecycle()
     }
 
