@@ -1,8 +1,8 @@
 package com.javiermarsicano.gifdroid.data.repository
 
 import androidx.room.RoomDatabase
+import com.javiermarsicano.gifdroid.data.model.Favourite
 import com.javiermarsicano.gifdroid.data.persistence.db.LocalStorageDatabase
-import com.javiermarsicano.gifdroid.data.persistence.entity.Favourite
 import com.javiermarsicano.gifdroid.data.persistence.entity.ImageEntity
 import io.reactivex.Single
 
