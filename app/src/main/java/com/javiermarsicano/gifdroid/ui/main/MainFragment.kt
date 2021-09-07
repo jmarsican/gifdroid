@@ -4,14 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import com.javiermarsicano.gifdroid.base.BaseMVPFragment
+import com.javiermarsicano.gifdroid.data.model.Content
 import com.javiermarsicano.gifdroid.databinding.FragmentMainBinding
+import javax.inject.Inject
 
-class MainFragment : Fragment() {
+class MainFragment : BaseMVPFragment<MainScreenContract.View, MainScreenContract.Presenter>(), MainScreenContract.View {
+
+    @Inject
+    lateinit var mPresenter: MainScreenContract.Presenter
 
     private var _binding: FragmentMainBinding? = null
 
     private val binding get() = _binding!!
+
+    override fun getPresenter(): MainScreenContract.Presenter = mPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,13 +37,25 @@ class MainFragment : Fragment() {
         return root
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = MainFragment()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun layoutId(): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun clearResults() {
+        TODO("Not yet implemented")
+    }
+
+    override fun addTrendingResults(results: List<Content>) {
+        TODO("Not yet implemented")
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = MainFragment()
     }
 }
