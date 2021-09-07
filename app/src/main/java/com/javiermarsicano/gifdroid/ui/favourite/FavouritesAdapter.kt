@@ -14,7 +14,6 @@ class FavouritesAdapter(val onItemClickListener: (Favourite) -> Unit) :
     RecyclerView.Adapter<FavouritesAdapter.FavouriteViewHolder>() {
 
     private val items: MutableList<Favourite> = mutableListOf()
-    val favoriteIds: MutableSet<String> = mutableSetOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouriteViewHolder {
         val binding = FavouriteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,11 +29,16 @@ class FavouritesAdapter(val onItemClickListener: (Favourite) -> Unit) :
                 error = R.mipmap.ic_launcher,
                 placeholder = R.mipmap.ic_launcher,
             )
+            root.setOnLongClickListener {
+                onItemClickListener(item)
+                true
+            }
         }
     }
 
     fun addItems(newItems: List<Favourite>) {
-        val diffResult = DiffUtil.calculateDiff(DiffResult(this.items, this.items + newItems))
+        val diffResult = DiffUtil.calculateDiff(DiffResult(this.items, newItems))
+        items.clear()
         items.addAll(newItems)
         diffResult.dispatchUpdatesTo(this)
     }

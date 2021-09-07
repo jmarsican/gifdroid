@@ -6,4 +6,5 @@ import io.reactivex.Single
 interface FavouritesRepository {
     fun loadFavourites(): Single<List<Favourite>>
     fun saveFavourite(favourite: Favourite)
+    fun deleteFavourite(favourite: Favourite)
 }

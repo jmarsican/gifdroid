@@ -32,7 +32,7 @@ class FavouriteFragment :
 
     override fun bindViews() {
         favouritesAdapter = FavouritesAdapter {
-
+            getPresenter().removeFavourite(it)
         }
         viewBinding.favouritesList.adapter = favouritesAdapter
     }

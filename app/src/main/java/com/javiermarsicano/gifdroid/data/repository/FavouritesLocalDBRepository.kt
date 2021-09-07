@@ -17,6 +17,10 @@ class FavouritesLocalDBRepository(private val database: LocalStorageDatabase) : 
         database.imageEntityDao().saveFavourite(ImageEntity(favourite.id, favourite.url))
     }
 
+    override fun deleteFavourite(favourite: Favourite) {
+        database.imageEntityDao().deleteFavourite(ImageEntity(favourite.id, favourite.url))
+    }
+
     fun ImageEntity.toFavourite() =
         Favourite(
             this.id,

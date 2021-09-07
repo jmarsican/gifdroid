@@ -11,6 +11,6 @@ interface FavouriteScreenContract {
 
     interface Presenter: MVPPresenter<View> {
         fun getFavourites()
-        fun removeFavourite(id: String)
+        fun removeFavourite(favourite: Favourite)
     }
 }
