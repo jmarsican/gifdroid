@@ -9,41 +9,19 @@ import com.javiermarsicano.gifdroid.data.model.Content
 import com.javiermarsicano.gifdroid.databinding.FragmentMainBinding
 import javax.inject.Inject
 
-class MainFragment : BaseMVPFragment<MainScreenContract.View, MainScreenContract.Presenter>(), MainScreenContract.View {
+class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.View, MainScreenContract.Presenter>(), MainScreenContract.View {
 
     @Inject
     lateinit var mPresenter: MainScreenContract.Presenter
 
-    private var _binding: FragmentMainBinding? = null
-
-    private val binding get() = _binding!!
-
     override fun getPresenter(): MainScreenContract.Presenter = mPresenter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun bindViews() {
+        super.bindViews()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        val root = binding.root
-
-
-        return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun layoutId(): Int {
-        TODO("Not yet implemented")
+    override fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentMainBinding {
+        return FragmentMainBinding.inflate(inflater, container, false)
     }
 
     override fun clearResults() {
@@ -53,6 +31,7 @@ class MainFragment : BaseMVPFragment<MainScreenContract.View, MainScreenContract
     override fun addTrendingResults(results: List<Content>) {
         TODO("Not yet implemented")
     }
+
 
     companion object {
         @JvmStatic
