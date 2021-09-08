@@ -1,7 +1,6 @@
 package com.javiermarsicano.gifdroid
 
 import com.javiermarsicano.gifdroid.data.model.Favourite
-import com.javiermarsicano.gifdroid.data.persistence.entity.ImageEntity
 import com.javiermarsicano.gifdroid.data.repository.FavouritesRepository
 import com.javiermarsicano.gifdroid.rules.RxSchedulersOverrideRule
 import com.javiermarsicano.gifdroid.ui.favourite.FavouriteScreenContract
@@ -23,10 +22,14 @@ class FavouriteScreenPresenterTests {
     val rxSchedulersRule = RxSchedulersOverrideRule()
 
     private lateinit var presenter: FavouriteScreenPresenter
+
     @Mock
     private lateinit var view: FavouriteScreenContract.View
+
     @Mock
     private lateinit var repository: FavouritesRepository
+
+    val results = listOf(Favourite("VkUdMsK42kNgrPWuHd", "https://giphy.com/gifs/MickeyMouse-VkUdMsK42kNgrPWuHd"))
 
     @Before
     fun setup() {
@@ -36,13 +39,22 @@ class FavouriteScreenPresenterTests {
 
     @Test
     fun `test get favourites successful`() {
-        val results = listOf(Favourite("VkUdMsK42kNgrPWuHd", "https://giphy.com/gifs/MickeyMouse-VkUdMsK42kNgrPWuHd"))
-        whenever(repository.loadFavourites()).thenReturn(
-            Single.just(results)
-        )
+        whenever(repository.loadFavourites())
+            .thenReturn(Single.just(results))
 
         presenter.getFavourites()
 
         verify(view).showFavourites(results)
+    }
+
+    @Test
+    fun `test get favourites error`() {
+        val exception = Throwable("ERROR")
+        whenever(repository.loadFavourites())
+            .thenReturn(Single.error(exception))
+
+        presenter.getFavourites()
+
+        verify(view).onError(exception.message)
     }
 }

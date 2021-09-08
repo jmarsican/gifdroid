@@ -42,6 +42,7 @@ class MainScreenPresenterTests {
 
     private val images = Images(ImageSpecs("https://giphy.com/gifs/MickeyMouse-VkUdMsK42kNgrPWuHd", 1024))
     private val content = Content("VkUdMsK42kNgrPWuHd", images, "Dancing dogs", "MickeyMouse-VkUdMsK42kNgrPWuHd")
+    private val favourites = listOf(Favourite("VkUdMsK42kNgrPWuHd", "https://giphy.com/gifs/MickeyMouse-VkUdMsK42kNgrPWuHd"))
 
     @Before
     fun setup() {
@@ -51,13 +52,17 @@ class MainScreenPresenterTests {
 
     @Test
     fun `fetch trending successful`() {
+        //Given
         val imagesList = listOf(content)
-        whenever(repository.getTrendingContent()).thenReturn(
-            Single.just(imagesList)
-        )
+        whenever(repository.getTrendingContent())
+            .thenReturn(Single.just(imagesList))
+        whenever(favouritesRepository.loadFavourites())
+            .thenReturn(Single.just(favourites))
 
+        //When
         presenter.getTrendingImages()
 
+        //Then
         verify(view).clearResults()
         verify(view).addResults(imagesList)
     }
@@ -68,20 +73,24 @@ class MainScreenPresenterTests {
 
         val captor = argumentCaptor<Favourite>()
         verify(favouritesRepository).saveFavourite(captor.capture())
+        verify(view).updateFavourite(content)
         assertEquals(captor.firstValue.id, content.id)
     }
 
     @Test
     fun `search images test`() {
+        //Given
         val imagesList = listOf(content)
         val query = "dogs"
         whenever(searchRepository.search(query))
-            .thenReturn(Single.just(
-                imagesList
-            ))
+            .thenReturn(Single.just(imagesList))
+        whenever(favouritesRepository.loadFavourites())
+            .thenReturn(Single.just(favourites))
 
+        //When
         presenter.searchImages(query)
 
+        //Then
         verify(view).addResults(imagesList)
     }
 
