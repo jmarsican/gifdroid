@@ -13,4 +13,6 @@ interface GifsServices {
     @GET("/$VERSION/gifs/trending")
     fun getTrending(@Query("api_key") key: String = GIFS_SERVICES_API_KEY): Single<ApiResponseDto>
 
+    @GET("/$VERSION/gifs/search")
+    fun search(@Query("api_key") key: String = GIFS_SERVICES_API_KEY, @Query("q") query: String): Single<ApiResponseDto>
 }

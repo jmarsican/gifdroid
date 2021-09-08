@@ -32,7 +32,7 @@ class GifDroidModule(private val application: Application) {
 
     @Singleton
     @Provides
-    fun providesSearchRepository(): ImagesSearchRepository = ImagesSearchRemoteRepository()
+    fun providesSearchRepository(): ImagesSearchRepository = ImagesSearchRemoteRepository(application,Uri.parse(BASE_URL))
 
     @Singleton
     @Provides

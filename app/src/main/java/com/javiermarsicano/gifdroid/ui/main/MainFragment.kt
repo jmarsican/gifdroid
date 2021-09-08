@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
 import com.javiermarsicano.gifdroid.GifDroidApplication
 import com.javiermarsicano.gifdroid.R
@@ -28,6 +29,18 @@ class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.Vie
             Toast.makeText(context, requireContext().getString(R.string.image_liked), Toast.LENGTH_SHORT).show()
         }
         viewBinding.resultsList.adapter = resultsAdapter
+        viewBinding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                getPresenter().searchImages(query.orEmpty())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                //Do nothing
+                return true
+            }
+
+        })
         getPresenter().getTrendingImages()
     }
 
