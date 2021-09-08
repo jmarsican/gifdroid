@@ -7,11 +7,12 @@ import com.javiermarsicano.gifdroid.data.model.Content
 interface MainScreenContract {
     interface View: MVPView {
         fun clearResults()
-        fun addTrendingResults(results: List<Content>)
+        fun addResults(results: List<Content>)
     }
 
     interface Presenter: MVPPresenter<View> {
         fun getTrendingImages()
         fun setImageFavourite(content: Content)
+        fun searchImages(query: String)
     }
 }

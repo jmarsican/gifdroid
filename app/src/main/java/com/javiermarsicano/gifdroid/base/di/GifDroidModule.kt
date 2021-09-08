@@ -7,6 +7,8 @@ import com.javiermarsicano.gifdroid.BuildConfig.BASE_URL
 import com.javiermarsicano.gifdroid.data.persistence.db.LocalStorageDatabase
 import com.javiermarsicano.gifdroid.data.repository.FavouritesLocalDBRepository
 import com.javiermarsicano.gifdroid.data.repository.FavouritesRepository
+import com.javiermarsicano.gifdroid.data.repository.ImagesSearchRemoteRepository
+import com.javiermarsicano.gifdroid.data.repository.ImagesSearchRepository
 import com.javiermarsicano.gifdroid.data.repository.TrendingRemoteRepository
 import com.javiermarsicano.gifdroid.data.repository.TrendingRepository
 import com.javiermarsicano.gifdroid.ui.favourite.FavouriteScreenContract
@@ -27,6 +29,10 @@ class GifDroidModule(private val application: Application) {
     @Provides
     fun provideFavouritesRepository(database: LocalStorageDatabase): FavouritesRepository =
         FavouritesLocalDBRepository(database)
+
+    @Singleton
+    @Provides
+    fun providesSearchRepository(): ImagesSearchRepository = ImagesSearchRemoteRepository()
 
     @Singleton
     @Provides

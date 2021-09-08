@@ -44,7 +44,7 @@ class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.Vie
         resultsAdapter.clear()
     }
 
-    override fun addTrendingResults(results: List<Content>) {
+    override fun addResults(results: List<Content>) {
         resultsAdapter.addItems(results)
     }
 
