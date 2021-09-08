@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.javiermarsicano.gifdroid.GifDroidApplication
+import com.javiermarsicano.gifdroid.R
 import com.javiermarsicano.gifdroid.base.BaseMVPFragment
 import com.javiermarsicano.gifdroid.data.model.Content
 import com.javiermarsicano.gifdroid.databinding.FragmentMainBinding
@@ -23,6 +25,7 @@ class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.Vie
     override fun bindViews() {
         resultsAdapter = ResultsAdapter {
             getPresenter().setImageFavourite(it)
+            Toast.makeText(context, requireContext().getString(R.string.image_liked), Toast.LENGTH_SHORT).show()
         }
         viewBinding.resultsList.adapter = resultsAdapter
         getPresenter().getTrendingImages()
@@ -39,11 +42,6 @@ class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.Vie
 
     override fun clearResults() {
         resultsAdapter.clear()
-    }
-
-    fun setFavourites(favourites: List<String>) {
-        resultsAdapter.favoriteIds.clear()
-        resultsAdapter.favoriteIds.addAll(favourites)
     }
 
     override fun addTrendingResults(results: List<Content>) {
