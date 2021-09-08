@@ -2,9 +2,7 @@ package com.javiermarsicano.gifdroid.ui.favourite
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.javiermarsicano.gifdroid.GifDroidApplication
 import com.javiermarsicano.gifdroid.base.BaseMVPFragment
 import com.javiermarsicano.gifdroid.data.model.Favourite
@@ -37,9 +35,11 @@ class FavouriteFragment :
         viewBinding.favouritesList.adapter = favouritesAdapter
     }
 
-    override fun onResume() {
-        super.onResume()
-        getPresenter().getFavourites()
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser && isResumed) {
+            getPresenter().getFavourites()
+        }
     }
 
     override fun showFavourites(favourites: List<Favourite>) {

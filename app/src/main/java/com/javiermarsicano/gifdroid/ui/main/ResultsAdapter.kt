@@ -3,6 +3,7 @@ package com.javiermarsicano.gifdroid.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.javiermarsicano.gifdroid.R
@@ -14,7 +15,6 @@ class ResultsAdapter(val onItemClickListener: (Content) -> Unit) :
     RecyclerView.Adapter<ResultsAdapter.ResultsViewHolder>() {
 
     private val items: MutableList<Content> = mutableListOf()
-    val favoriteIds: MutableSet<String> = mutableSetOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultsViewHolder {
         val binding = EntryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,15 +25,12 @@ class ResultsAdapter(val onItemClickListener: (Content) -> Unit) :
         val item = items[position]
         holder.binding.apply {
             entryTitle.text = item.title
-            entryId.text = item.id
             entryImage.setImageUrl(
                 item.images.original.url,
                 crossFade = true,
                 error = R.mipmap.ic_launcher,
                 placeholder = R.mipmap.ic_launcher,
             )
-            val isFavourite = favoriteIds.contains(item.id)
-            entryGoBtn.visibility  = if (isFavourite) View.VISIBLE else View.INVISIBLE
             root.setOnLongClickListener {
                 onItemClickListener(item)
                 true
