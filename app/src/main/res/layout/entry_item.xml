@@ -31,10 +31,21 @@
         android:textSize="12sp"
         android:maxLines="3"
         android:ellipsize="end"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/entry_go_btn"
         app:layout_constraintStart_toEndOf="@id/entry_image"
         app:layout_constraintBottom_toTopOf="@id/entry_image"
         app:layout_constraintTop_toBottomOf="@id/entry_image"/>
+
+    <ImageView
+        android:id="@+id/entry_go_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:src="@android:drawable/ic_media_play"/>
 
     <View
         android:layout_width="match_parent"

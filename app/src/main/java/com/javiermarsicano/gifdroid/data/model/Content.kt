@@ -5,5 +5,6 @@ data class Content(
     val id: String,
     val images: Images,
     val title: String,
-    val slug: String
+    val slug: String,
+    var isFavourite: Boolean = false
 )

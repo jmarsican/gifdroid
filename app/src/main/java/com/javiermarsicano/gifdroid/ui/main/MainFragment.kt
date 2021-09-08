@@ -26,7 +26,6 @@ class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.Vie
     override fun bindViews() {
         resultsAdapter = ResultsAdapter {
             getPresenter().setImageFavourite(it)
-            Toast.makeText(context, requireContext().getString(R.string.image_liked), Toast.LENGTH_SHORT).show()
         }
         viewBinding.resultsList.adapter = resultsAdapter
         viewBinding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
@@ -59,6 +58,10 @@ class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.Vie
 
     override fun addResults(results: List<Content>) {
         resultsAdapter.addItems(results)
+    }
+
+    override fun updateFavourite(image: Content) {
+        resultsAdapter.updateItem(image)
     }
 
     override fun showLoading() {

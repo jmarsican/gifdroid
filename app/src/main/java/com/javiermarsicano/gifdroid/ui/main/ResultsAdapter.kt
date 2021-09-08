@@ -29,12 +29,16 @@ class ResultsAdapter(val onItemClickListener: (Content) -> Unit) :
                 item.images.original.url,
                 crossFade = true,
                 error = R.mipmap.ic_launcher,
-                placeholder = R.mipmap.ic_launcher,
+                placeholder = R.drawable.custom_progress,
             )
-            root.setOnLongClickListener {
-                onItemClickListener(item)
-                true
-            }
+            entryGoBtn.setImageDrawable(
+                if (item.isFavourite) {
+                    ContextCompat.getDrawable(root.context, android.R.drawable.btn_star_big_on)
+                } else {
+                    ContextCompat.getDrawable(root.context, android.R.drawable.btn_star)
+                }
+            )
+            entryGoBtn.setOnClickListener { onItemClickListener(item) }
         }
     }
 
@@ -42,6 +46,11 @@ class ResultsAdapter(val onItemClickListener: (Content) -> Unit) :
         val diffResult = DiffUtil.calculateDiff(DiffResult(this.items, this.items + newItems))
         items.addAll(newItems)
         diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun updateItem(item: Content) {
+        val pos = items.indexOf(item)
+        notifyItemChanged(pos)
     }
 
     fun clear() {

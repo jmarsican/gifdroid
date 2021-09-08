@@ -7,7 +7,9 @@ import com.javiermarsicano.gifdroid.data.repository.FavouritesRepository
 import com.javiermarsicano.gifdroid.data.repository.ImagesSearchRepository
 import com.javiermarsicano.gifdroid.data.repository.TrendingRepository
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
@@ -17,48 +19,68 @@ class MainScreenPresenter @Inject constructor(
      private val favouritesRepository: FavouritesRepository,
      private val searchRepository: ImagesSearchRepository
 ): BaseMVPPresenter<MainScreenContract.View>(), MainScreenContract.Presenter {
+
     override fun getTrendingImages() {
         viewReference.get()?.showLoading()
-        repository.getTrendingContent()
+        Observables.combineLatest(
+            repository.getTrendingContent().toObservable(),
+            favouritesRepository.loadFavourites().toObservable()
+        )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { viewReference.get()?.hideLoading() }
             .subscribe(
-                {
+                { (results, favourites) ->
+                    setResultsFavourites(favourites, results)
                     val view = viewReference.get()
                     view?.clearResults()
-                    view?.addResults(it)
+                    view?.addResults(results)
                 },
                 { viewReference.get()?.onError(it.message) }
             ).bindToLifecycle()
     }
 
-    override fun setImageFavourite(content: Content) {
-        Completable.fromAction {
-            favouritesRepository.saveFavourite(
-                Favourite(
-                    content.id,
-                    content.images.original.url
-                )
-            )
-        }.subscribeOn(Schedulers.io())
-            .subscribe {
-                Timber.d("Image save as favourite: ${content.title}")
-            }.bindToLifecycle()
+    private fun setResultsFavourites(favourites: List<Favourite>, results: List<Content>) {
+        favourites.forEach { favourite ->
+            results.firstOrNull { it.id == favourite.id }?.isFavourite = true
+        }
+    }
 
+    override fun setImageFavourite(content: Content) {
+        val favourite = Favourite(
+            content.id,
+            content.images.original.url
+        )
+        Completable.fromAction {
+            if (!content.isFavourite) {
+                favouritesRepository.saveFavourite(favourite)
+            } else {
+                favouritesRepository.deleteFavourite(favourite)
+            }
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                content.isFavourite = !content.isFavourite
+                Timber.d("Image is favourite: ${content.isFavourite}")
+                viewReference.get()?.updateFavourite(content)
+            }.bindToLifecycle()
     }
 
     override fun searchImages(query: String) {
         viewReference.get()?.showLoading()
-        searchRepository.search(query)
+        Observables.combineLatest(
+            searchRepository.search(query).toObservable(),
+            favouritesRepository.loadFavourites().toObservable()
+        )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { viewReference.get()?.hideLoading() }
             .subscribe(
-                {
+                { (results, favourites) ->
+                    setResultsFavourites(favourites, results)
                     val view = viewReference.get()
                     view?.clearResults()
-                    view?.addResults(it)
+                    view?.addResults(results)
                 },
                 { viewReference.get()?.onError(it.message) }
             ).bindToLifecycle()

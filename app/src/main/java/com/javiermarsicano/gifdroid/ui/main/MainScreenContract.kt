@@ -8,6 +8,7 @@ interface MainScreenContract {
     interface View: MVPView {
         fun clearResults()
         fun addResults(results: List<Content>)
+        fun updateFavourite(image: Content)
     }
 
     interface Presenter: MVPPresenter<View> {
