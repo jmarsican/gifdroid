@@ -35,7 +35,11 @@ class MainFragment : BaseMVPFragment<FragmentMainBinding, MainScreenContract.Vie
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                //Do nothing
+                newText?.let {
+                    if (it.length >= 3) {
+                        getPresenter().searchImages(newText.orEmpty())
+                    }
+                }
                 return true
             }
 

@@ -64,7 +64,7 @@ display a solid understanding of REST APIs
  * And the following mandatory requirement didn't work - "This button must also indicate if the GIF is a favourite or not" - when a GIF was unfavourited on Favourites tab
  * The list is cutting off last item;
  * Keyboard is only triggered when tapping search icon (instead of entire view)
- * Search field is only triggered when tapping send (instead of search when typing)
+ * Search field is only triggered when tapping send (instead of search when typing) [solved]
  * App is not handling empty Search properly
  * Gif image resizes when tapped
  * Gif removal is not intuitive: A long press event was implemented

@@ -9,6 +9,7 @@ import com.javiermarsicano.gifdroid.data.repository.TrendingRepository
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposables
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -19,6 +20,8 @@ class MainScreenPresenter @Inject constructor(
      private val favouritesRepository: FavouritesRepository,
      private val searchRepository: ImagesSearchRepository
 ): BaseMVPPresenter<MainScreenContract.View>(), MainScreenContract.Presenter {
+
+    private var searchDisposable = Disposables.disposed()
 
     override fun getTrendingImages() {
         viewReference.get()?.showLoading()
@@ -68,7 +71,8 @@ class MainScreenPresenter @Inject constructor(
 
     override fun searchImages(query: String) {
         viewReference.get()?.showLoading()
-        Observables.combineLatest(
+        searchDisposable.dispose()
+        searchDisposable = Observables.combineLatest(
             searchRepository.search(query).toObservable(),
             favouritesRepository.loadFavourites().toObservable()
         )
@@ -83,7 +87,7 @@ class MainScreenPresenter @Inject constructor(
                     view?.addResults(results)
                 },
                 { viewReference.get()?.onError(it.message) }
-            ).bindToLifecycle()
+            ).apply { bindToLifecycle() }
     }
 
 }
