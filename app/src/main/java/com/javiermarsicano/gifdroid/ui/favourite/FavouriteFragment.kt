@@ -35,11 +35,9 @@ class FavouriteFragment :
         viewBinding.favouritesList.adapter = favouritesAdapter
     }
 
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser && isResumed) {
-            getPresenter().getFavourites()
-        }
+    override fun onResume() {
+        super.onResume()
+        getPresenter().getFavourites()
     }
 
     override fun showFavourites(favourites: List<Favourite>) {
